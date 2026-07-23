@@ -1,17 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Lab: Event Listeners With JavaScript</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <h1>Lab: Event Listeners With JavaScript</h1>
-  <button id="changeColorButton">Change Background Color</button>
-  <button id="resetColorButton">Reset Background Color</button>
-  <p id="keyPressDisplay">Press any key...</p>
-  <input type="text" id="textInput" placeholder="Type something...">
-  <p id="textInputDisplay">Your input will be displayed here.</p>
-  <script src="index.js"></script>
-</body>
-</html>
+// ============================================
+// STEP 1: Change / Reset Background Color
+// ============================================
+
+function changeBackgroundColor() {
+  document.body.style.backgroundColor = "lightblue";
+}
+
+function resetBackgroundColor() {
+  document.body.style.backgroundColor = "white";
+}
+
+const changeColorButton = document.getElementById("changeColorButton");
+const resetColorButton = document.getElementById("resetColorButton");
+
+changeColorButton.addEventListener("click", changeBackgroundColor);
+resetColorButton.addEventListener("dblclick", resetBackgroundColor);
+
+
+// ============================================
+// STEP 2: Capture Keyboard Input
+// ============================================
+
+function displayKeyPress(event) {
+  const keyDisplay = document.getElementById("keyPressDisplay");
+  keyDisplay.textContent = `You pressed: ${event.key}`;
+}
+
+document.addEventListener("keydown", displayKeyPress);
+
+
+// ============================================
+// STEP 3: Process Text Input
+// ============================================
+
+function displayUserInput() {
+  const textInput = document.getElementById("textInput");
+  const textInputDisplay = document.getElementById("textInputDisplay");
+  textInputDisplay.textContent = textInput.value;
+}
+
+const textInput = document.getElementById("textInput");
+textInput.addEventListener("input", displayUserInput);
+
+
+// ============================================
+// STEP 4: Combine Multiple Events
+// ============================================
+
+function setupDynamicInteractions() {
+  // Clicking the change-color button also updates the key press display
+  changeColorButton.addEventListener("click", () => {
+    const keyDisplay = document.getElementById("keyPressDisplay");
+    keyDisplay.textContent = "Background changed! Try pressing a key or typing below.";
+  });
+
+  // Pressing Enter while typing also resets the background color
+  textInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      resetBackgroundColor();
+    }
+  });
+}
+
+setupDynamicInteractions();
